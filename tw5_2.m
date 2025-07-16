@@ -1,0 +1,10 @@
+X = zscore(table2array(readtable('wine_dataset_for_hiearchical_clusterig.csv.xlsx')));
+distance = pdist(X,'euclidean');
+z = linkage(distance,'ward');
+dendrogram(z);
+xlabel('Sample Data'); ylabel('Distance');
+title('Aglomerative Clustering');
+fprintf('Correlation: %.4f',cophenet(z,distance));
+silhouette(X,cluster(z,'maxclust',3));
+title('Silhouette Plot');
+fprintf('Average Silhouette Score: %.4f',mean(silhouette(X,cluster(z,'maxclust',3))));

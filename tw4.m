@@ -1,0 +1,15 @@
+data = readtable('weather_data.csv.xlsx');
+data.Outlook = categorical(data.Outlook);
+data.Humidity = categorical(data.Humidity);
+data.Wind = categorical(data.Wind);
+data.Run = categorical(data.Run);
+predictor = data(:,{'Outlook','Humidity','Wind'});
+response = data.Run;
+model = fitcnb(predictor,response);
+newData = table(categorical("Sunny"),categorical("Normal"),categorical("Weak"),'VariableNames', {'Outlook','Humidity','Wind'});
+result = predict(model,newData);
+fprintf('Result = %s\n',string(result));
+train_pred = predict(model,predictor);
+confusionchart(response,train_pred);
+accuracy = sum(train_pred == response)/numel(response);
+fprintf('Accuracy: %.2f%%\n',accuracy*100);
